@@ -1,5 +1,6 @@
 <?php
-require_once "../config/database.php";
+declare(strict_types=1);
+session_start();
 
-$db = Database::getConnection();
-echo "Connexion PostgreSQL réussie ✅";
+require_once __DIR__ . '/../app/init.php';
+require_once __DIR__ . '/../Routes/route.php';
