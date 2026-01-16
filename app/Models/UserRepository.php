@@ -26,7 +26,6 @@ class UserRepository
             $user->setPassword($data['password']);
             $user->setRole($data['role']);
 
-            // On récupère l’id
             $reflection = new ReflectionClass($user);
             $property = $reflection->getProperty('id_user');
             $property->setAccessible(true);

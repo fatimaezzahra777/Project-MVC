@@ -1,87 +1,128 @@
+<?php
+if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'coach') {
+    header('Location: /login');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <title>Dashboard Coach</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SportCoach - Plateforme de Coaching Sportif</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="./assets/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="relative min-h-screen bg-black overflow-x-hidden text-white">
-        <!-- Background graphique glassmorphism -->
-        <div class="absolute inset-0 -z-10">
-            <div class="absolute -left-40 top-1/2 w-[700px] h-[700px]
-                        bg-gradient-to-r from-blue-500 to-green-500
-                        opacity-30 rounded-full blur-3xl"></div>
+<body class="bg-black text-white flex">
 
-            <div class="absolute -right-40 top-1/3 w-[700px] h-[700px]
-                    bg-gradient-to-r from-green-500 to-blue-500
-                    opacity-30 rounded-full blur-3xl"></div>
-       </div>
-
-        <nav class="bg-white/10 backdrop-blur-xl border-b border-white/20
-            text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-
-                <div class="flex items-center space-x-2 cursor-pointer">
-                    <i class="fas fa-dumbbell text-3xl text-emerald-400"></i>
-                    <span class="text-2xl font-bold">SportCoach</span>
-                </div>
-
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8 font-medium">
-                    <a href="profilC.php" class="hover:text-emerald-400 transition">Profile</a>
-                    <a href="coach.php" class="text-emerald-400 font-bold">Dashboard</a>
-                    <a href="logout.php" class="hover:text-emerald-400 transition">Deconnexion</a>
-                </div>
-                <!-- Mobile Menu Button -->
-                <button class="md:hidden">
-                    <i class="fas fa-bars text-2xl"></i>
-                </button>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden pb-4 space-y-2">
-                <a href="profilC.php" class="block hover:text-emerald-400">Profile</a>
-                <a href="coach.php" class="block text-emerald-400 font-bold">Dashboard</a>
-                <a href="logout.php" class="block hover:text-emerald-400">Deconnexion</a>
-            </div>
-        </div>
+<!-- ================= SIDEBAR ================= -->
+<aside class="w-64 bg-black/90 border-r border-gray-800 min-h-screen fixed flex flex-col">
+    <div class="p-6 text-center border-b border-gray-800">
+        <h1 class="text-2xl font-bold text-orange-500">SUPER<span class="text-white">FITNESS</span></h1>
+    </div>
+    <nav class="flex-1 mt-6">
+        <ul class="flex flex-col gap-2">
+            <li><a href="/dashboard" class="flex items-center gap-3 p-3 hover:bg-gray-800 rounded">
+                <i class="fas fa-home text-orange-500"></i> Dashboard
+            </a></li>
+            <li><a href="/profile" class="flex items-center gap-3 p-3 hover:bg-gray-800 rounded">
+                <i class="fas fa-user text-orange-500"></i> Profile
+            </a></li>
+            <li><a href="/trainers" class="flex items-center gap-3 p-3 hover:bg-gray-800 rounded">
+                <i class="fas fa-dumbbell text-orange-500"></i> Trainers
+            </a></li>
+            <li><a href="/stats" class="flex items-center gap-3 p-3 hover:bg-gray-800 rounded">
+                <i class="fas fa-chart-line text-orange-500"></i> Stats
+            </a></li>
+            <li><a href="/logout" class="flex items-center gap-3 p-3 hover:bg-gray-800 rounded mt-auto">
+                <i class="fas fa-sign-out-alt text-orange-500"></i> Logout
+            </a></li>
+        </ul>
     </nav>
-       <div class="max-w-7xl mx-auto px-4 py-16">
-            <h2 class="text-4xl font-bold text-emerald-400 mb-8 text-center">Nos Coachs Vedettes</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="featuredCoaches"></div>
+</aside>
+
+<!-- ================= MAIN CONTENT ================= -->
+<main class="flex-1 ml-64 p-6">
+
+    <!-- ================= OUR PROCESS ================= -->
+    <section class="max-w-7xl mx-auto py-16">
+        <h2 class="text-3xl font-bold text-center mb-10 text-orange-500">Our Process</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+            <div class="bg-gray-900 p-6 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-chart-line text-orange-500 text-3xl mb-3"></i>
+                <h3 class="font-semibold mb-1">Analyse Your Goal</h3>
+            </div>
+            <div class="bg-gray-900 p-6 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-flask text-orange-400 text-3xl mb-3"></i>
+                <h3 class="font-semibold mb-1">Work Hard on It</h3>
+            </div>
+            <div class="bg-gray-900 p-6 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-dumbbell text-orange-400 text-3xl mb-3"></i>
+                <h3 class="font-semibold mb-1">Improve Yourself</h3>
+            </div>
+            <div class="bg-gray-900 p-6 rounded-xl hover:bg-gray-800 transition">
+                <i class="fas fa-trophy text-yellow-400 text-3xl mb-3"></i>
+                <h3 class="font-semibold mb-1">Achieve Your Destiny</h3>
+            </div>
         </div>
-        <div class="grid md:grid-cols-4 px-32 gap-6 mb-12">
-            <div class="bg-white/10 p-6 rounded-xl">
-                Demandes en attente<br>
-                <span class="text-2xl font-bold"></span>
+    </section>
+
+    <!-- ================= STATS ================= -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
+            <div>
+                <p class="text-3xl font-bold text-orange-500">3480</p>
+                <p class="text-gray-400 text-sm">Apps</p>
             </div>
-
-            <div class="bg-white/10 p-6 rounded-xl">
-                Séances aujourd'hui<br>
-                <span class="text-2xl font-bold"></span>
+            <div>
+                <p class="text-3xl font-bold text-orange-500">460+</p>
+                <p class="text-gray-400 text-sm">Members</p>
             </div>
-
-            <div class="bg-white/10 p-6 rounded-xl">
-                Séances demain<br>
-                <span class="text-2xl font-bold"></span>
+            <div>
+                <p class="text-3xl font-bold text-orange-500">150+</p>
+                <p class="text-gray-400 text-sm">Trainers</p>
             </div>
-
-            <div class="bg-white/10 p-6 rounded-xl">
-                Prochaine séance<br>
+            <div>
+                <p class="text-3xl font-bold text-orange-500">65</p>
+                <p class="text-gray-400 text-sm">Kettlebells</p>
             </div>
-       </div>
-       
+            <div>
+                <p class="text-3xl font-bold text-orange-500">100</p>
+                <p class="text-gray-400 text-sm">Hr/Track</p>
+            </div>
+        </div>
+    </section>
 
-       
+    <!-- ================= OUR TRAINERS ================= -->
+    <section class="py-16">
+        <h2 class="text-3xl font-bold text-center mb-10 text-orange-500">Our Trainers</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gray-900 rounded-xl overflow-hidden text-center p-6 hover:scale-[1.03] transition">
+                <img src="/assets/images/trainer1.jpg" class="w-full h-64 object-cover mb-4" alt="Trainer 1">
+                <h3 class="font-semibold">Jorge Martin</h3>
+                <p class="text-gray-400">Fitness Trainer</p>
+            </div>
+            <div class="bg-gray-900 rounded-xl overflow-hidden text-center p-6 hover:scale-[1.03] transition">
+                <img src="/assets/images/trainer2.jpg" class="w-full h-64 object-cover mb-4" alt="Trainer 2">
+                <h3 class="font-semibold">Mark</h3>
+                <p class="text-gray-400">Fitness Trainer</p>
+            </div>
+            <div class="bg-gray-900 rounded-xl overflow-hidden text-center p-6 hover:scale-[1.03] transition">
+                <img src="/assets/images/trainer3.jpg" class="w-full h-64 object-cover mb-4" alt="Trainer 3">
+                <h3 class="font-semibold">George</h3>
+                <p class="text-gray-400">Fitness Trainer</p>
+            </div>
+        </div>
+    </section>
 
-</div>
+    <!-- ================= TESTIMONIALS ================= -->
+    <section class="py-16">
+        <h2 class="text-3xl font-bold text-center mb-10 text-orange-500">Testimonials</h2>
+        <div class="max-w-3xl mx-auto text-center text-gray-400 italic">
+            <p>"Chaque utilisateur, membre ou coach, a trouvé son programme parfait grâce à cette plateforme. Hautement recommandé!"</p>
+            <p class="mt-4 font-semibold text-white">- Jackson, Coach Professionnel</p>
+        </div>
+    </section>
 
-     <script src="./assets/js/index.js" ></script>
-    
-</body>
-</html>
+</main>

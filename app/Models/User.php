@@ -11,7 +11,6 @@ class User
     private $password;
     private $role;
 
-    // GETTERS & SETTERS
     public function getId() { return $this->id_user; }
     public function getNom() { return $this->nom; }
     public function getEmail() { return $this->email; }

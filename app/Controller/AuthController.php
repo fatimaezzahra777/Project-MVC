@@ -23,9 +23,12 @@ class AuthController
             $user = $this->userRepo->findByEmail($email);
 
             if ($user && password_verify($password, $user->getPassword())) {
-                $_SESSION['id_user'] = $user->getId();
-                $_SESSION['nom'] = $user->getNom();
-                $_SESSION['role'] = $user->getRole();
+                $_SESSION['user'] = [
+                    'id'   => $user->getId(),    
+                    'nom'  => $user->getNom(),
+                    'role' => $user->getRole()
+                ];
+
 
                 if ($user->getRole() === 'sportif') {
                     header('Location: /sportif/reserv');
