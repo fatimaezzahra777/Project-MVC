@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Ignore le dossier assets
+RewriteCond %{REQUEST_URI} !^/assets/
+
+# Toutes les autres requêtes vers index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php?url=$1 [QSA,L]
