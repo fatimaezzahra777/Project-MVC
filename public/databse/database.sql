@@ -44,8 +44,8 @@ CREATE TABLE reservation (
 );
 
 
---create table disponibilite
-CREATE TABLE disponibilite(
+--create table Seance
+CREATE TABLE Seance(
     id SERIAL PRIMARY KEY,
     id_coach INT NOT NULL,
     jour  DATE,
