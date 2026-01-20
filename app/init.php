@@ -1,12 +1,14 @@
 <?php
+declare(strict_types=1);
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 spl_autoload_register(function ($class) {
-    $basePath = __DIR__;
-
     $paths = [
-        $basePath . '/Controller/' . $class . '.php',
-        $basePath . '/Models/' . $class . '.php',
+        __DIR__ . '/Controller/' . $class . '.php',
+        __DIR__ . '/Models/' . $class . '.php',
     ];
 
     foreach ($paths as $file) {
@@ -16,5 +18,3 @@ spl_autoload_register(function ($class) {
         }
     }
 });
-
-require_once __DIR__ . '/../config/database.php';

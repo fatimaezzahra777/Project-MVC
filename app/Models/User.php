@@ -1,42 +1,41 @@
 <?php
 
-require_once __DIR__ . '/../../config/database.php';
-
 class User
 {
-    private $id_user;
-    private $nom;
-    private $email;
-    private $telephone;
-    private $password;
-    private $role;
+    private PDO $db;
 
-    public function getId() { return $this->id_user; }
-    public function getNom() { return $this->nom; }
-    public function getEmail() { return $this->email; }
-    public function getTelephone() { return $this->telephone; }
-    public function getPassword() { return $this->password; }
-    public function getRole() { return $this->role; }
-
-    public function setNom($nom) { $this->nom = $nom; }
-    public function setEmail($email) { $this->email = $email; }
-    public function setTelephone($tel) { $this->telephone = $tel; }
-    public function setPassword($pass) { $this->password = $pass; }
-    public function setRole($role) { $this->role = $role; }
-
-    // Sauvegarde dans la base
-    public function save()
+    public function __construct(PDO $db)
     {
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("INSERT INTO users (nom, email, telephone, password, role)
-                               VALUES (:nom, :email, :tel, :pass, :role)");
-        $stmt->execute([
-            ':nom' => $this->nom,
-            ':email' => $this->email,
-            ':tel' => $this->telephone,
-            ':pass' => $this->password,
-            ':role' => $this->role
-        ]);
-        $this->id_user = $pdo->lastInsertId();
+        $this->db = $db;
+    }
+
+    public function findByEmail(string $email): ?array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM users WHERE email = :email"
+        );
+        $stmt->execute(['email' => $email]);
+
+        return $stmt->fetch() ?: null;
+    }
+
+    public function create(array $data): bool
+    {
+        $sql = "
+            INSERT INTO users (nom, email, telephone, password, role)
+            VALUES (:nom, :email, :telephone, :password, :role)
+        ";
+
+        return $this->db->prepare($sql)->execute($data);
+    }
+
+    public function findById(int $id): ?array
+    {
+        $stmt = $this->db->prepare(
+            "SELECT * FROM users WHERE id_user = :id"
+        );
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetch() ?: null;
     }
 }

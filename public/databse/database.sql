@@ -23,6 +23,7 @@ CREATE TABLE coach (
     FOREIGN KEY (id_user) REFERENCES users(id_user),
 );
 
+
 --create table sportif
 CREATE TABLE sportif (
     id_sportif SERIAL PRIMARY KEY,
@@ -42,7 +43,6 @@ CREATE TABLE reservation (
     FOREIGN KEY (id_coach) REFERENCES coach(id_coach),
     FOREIGN KEY (id_sportif) REFERENCES sportif(id_sportif)
 );
-
 
 --create table Seance
 CREATE TABLE Seance(

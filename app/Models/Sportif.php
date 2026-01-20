@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 class Sportif
 {
@@ -12,21 +11,23 @@ class Sportif
 
     public function findByUserId(int $userId): ?array
     {
-        $stmt = $this->db->prepare("SELECT * FROM sportif WHERE id_user = :userId");
-        $stmt->execute(['userId' => $userId]);
-        $sportif = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $sportif ?: null;
+        $stmt = $this->db->prepare(
+            "SELECT * FROM sportif WHERE id_user = :user_id"
+        );
+        $stmt->execute(['user_id' => $userId]);
+
+        return $stmt->fetch() ?: null;
     }
 
-    public function findAll(): array
+    public function create(int $userId, ?string $niveau): bool
     {
-        $stmt = $this->db->query("SELECT * FROM sportif");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+        $stmt = $this->db->prepare(
+            "INSERT INTO sportif (id_user, niveau) VALUES (:id_user, :niveau)"
+        );
 
-    public function add(int $userId, string $niveau): bool
-    {
-        $stmt = $this->db->prepare("INSERT INTO sportif (id_user, niveau) VALUES (:userId, :niveau)");
-        return $stmt->execute(['userId' => $userId, 'niveau' => $niveau]);
+        return $stmt->execute([
+            'id_user' => $userId,
+            'niveau'  => $niveau
+        ]);
     }
 }

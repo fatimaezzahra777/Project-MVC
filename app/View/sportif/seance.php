@@ -1,7 +1,6 @@
 <?php require __DIR__ . '/../includes/Header.php'; ?>
 
-
-<div class="flex min-h-screen bg-black text-white">
+    <div class="flex min-h-screen bg-black text-white">
 
     <!-- SIDEBAR -->
     <aside class="w-64 bg-black/90 border-r border-gray-800 fixed h-full">
@@ -22,12 +21,12 @@
             </a>
 
             <a href="/sportif/seance"
-               class="flex items-center gap-3 p-3 rounded-lg  hover:bg-white/10 transition">
+               class="flex items-center gap-3 p-3 rounded-lg bg-orange-500 font-bold">
                 🏋️ Séances
             </a>
 
             <a href="/sportif/reserv"
-               class="flex items-center gap-3 p-3 rounded-lg bg-orange-500 font-bold"">
+               class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/10 transition">
                 📅 Réservations
             </a>
 
@@ -40,27 +39,20 @@
 
     <!-- Contenu principal -->
     <main class="ml-64 flex-1 p-10">
-        <h1 class="text-3xl font-bold mb-6">Mes Réservations</h1>
+        <h1 class="text-3xl font-bold mb-6">Séances Disponibles</h1>
 
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-gray-800">
-                        <th class="px-4 py-2">Coach</th>
-                        <th class="px-4 py-2">Date</th>
-                        <th class="px-4 py-2">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($reservations as $r): ?>
-                        <tr class="border-b border-gray-700">
-                            <td class="px-4 py-2"><?= htmlspecialchars($r['nom']) ?></td>
-                            <td class="px-4 py-2"><?= htmlspecialchars($r['jour']) ?></td>
-                            <td class="px-4 py-2"><?= htmlspecialchars($r['status']) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <?php foreach ($seances as $seance): ?>
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-2"><?= htmlspecialchars($seance['nom']) ?></h3>
+                    <p class="text-gray-400 mb-2">Coach : <?= htmlspecialchars($seance['coach_nom']) ?></p>
+                    <p class="text-gray-400 mb-4">Date : <?= htmlspecialchars($seance['date']) ?></p>
+                    <a href="/sportif/reserv/<?= $seance['id'] ?>" 
+                       class="block text-center bg-orange-500 hover:bg-orange-600 py-2 rounded transition">
+                       Réserver
+                    </a>
+                </div>
+            <?php endforeach; ?>
         </div>
     </main>
 

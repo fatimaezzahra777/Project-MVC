@@ -5,7 +5,7 @@ require __DIR__ . '/../includes/Header.php';
 require __DIR__ . '/../includes/nav.php';
 ?>
 
-<!-- HERO -->
+
 <section class="h-screen bg-cover bg-center flex items-center"
          style="background-image:url('/assets/images/hero.jpg')">
     <div class="bg-black/70 w-full h-full flex items-center">

@@ -2,56 +2,34 @@
 
 class Coach
 {
-    private int $idCoach;
-    private int $idUser;
-    private int $experience;
-    private string $discipline;
-    private string $biographie;
-    private string $photo;
+    private PDO $db;
 
-    public function __construct(
-        int $idCoach,
-        int $idUser,
-        int $experience,
-        string $discipline,
-        string $biographie,
-        string $photo
-    ) {
-        $this->idCoach = $idCoach;
-        $this->idUser = $idUser;
-        $this->experience = $experience;
-        $this->discipline = $discipline;
-        $this->biographie = $biographie;
-        $this->photo = $photo;
+    public function __construct(PDO $db)
+    {
+        $this->db = $db;
     }
 
-    public function getIdCoach(): int
+    public function findByUserId(int $userId): ?array
     {
-        return $this->idCoach;
+        $sql = "
+            SELECT *
+            FROM coach
+            WHERE id_user = :id_user
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id_user' => $userId]);
+
+        return $stmt->fetch() ?: null;
     }
 
-    public function getIdUser(): int
+    public function create(array $data): bool
     {
-        return $this->idUser;
-    }
+        $sql = "
+            INSERT INTO coach (id_user, experience, discipline, biographie, photo)
+            VALUES (:id_user, :experience, :discipline, :biographie, :photo)
+        ";
 
-    public function getExperience(): int
-    {
-        return $this->experience;
-    }
-
-    public function getDiscipline(): string
-    {
-        return $this->discipline;
-    }
-
-    public function getBiographie(): string
-    {
-        return $this->biographie;
-    }
-
-    public function getPhoto(): string
-    {
-        return $this->photo;
+        return $this->db->prepare($sql)->execute($data);
     }
 }

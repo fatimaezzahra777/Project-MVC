@@ -1,15 +1,16 @@
 <?php
 
 require_once __DIR__ . '/../Models/User.php';
-require_once __DIR__ . '/../Models/UserRepository.php';
+require_once __DIR__ . '/../../config/database.php';
 
 class AuthController
 {
-    private $userRepo;
+    private User $userModel;
 
     public function __construct()
     {
-        $this->userRepo = new UserRepository();
+        $db = Database::getConnection();
+        $this->userModel = new User($db);
     }
 
     public function login()
@@ -20,26 +21,24 @@ class AuthController
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            $user = $this->userRepo->findByEmail($email);
+            $user = $this->userModel->findByEmail($email);
 
-            if ($user && password_verify($password, $user->getPassword())) {
+            if ($user && password_verify($password, $user['password'])) {
+
                 $_SESSION['user'] = [
-                    'id'   => $user->getId(),    
-                    'nom'  => $user->getNom(),
-                    'role' => $user->getRole()
+                    'id'   => $user['id_user'],
+                    'nom'  => $user['nom'],
+                    'role' => $user['role']
                 ];
 
-
-                if ($user->getRole() === 'sportif') {
-                    header('Location: /sportif/reserv');
-                    exit;
-                } elseif ($user->getRole() === 'coach') {
+                if ($user['role'] === 'sportif') {
+                    header('Location: /sportif/dashboard');
+                } elseif ($user['role'] === 'coach') {
                     header('Location: /coach/dashboard');
-                    exit;
                 } else {
                     header('Location: /');
-                    exit;
                 }
+                exit;
             } else {
                 $error = "Email ou mot de passe incorrect.";
             }
@@ -53,24 +52,18 @@ class AuthController
         $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nom = $_POST['nom'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $telephone = $_POST['telephone'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $role = $_POST['role'] ?? '';
+            $data = [
+                'nom'       => $_POST['nom'] ?? '',
+                'email'     => $_POST['email'] ?? '',
+                'telephone' => $_POST['telephone'] ?? '',
+                'password'  => password_hash($_POST['password'] ?? '', PASSWORD_DEFAULT),
+                'role'      => $_POST['role'] ?? ''
+            ];
 
-            if ($this->userRepo->findByEmail($email)) {
+            if ($this->userModel->findByEmail($data['email'])) {
                 $error = "Email déjà utilisé.";
             } else {
-                $user = new User();
-                $user->setNom($nom);
-                $user->setEmail($email);
-                $user->setTelephone($telephone);
-                $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
-                $user->setRole($role);
-
-                $user->save();
-
+                $this->userModel->create($data);
                 header('Location: /login');
                 exit;
             }
